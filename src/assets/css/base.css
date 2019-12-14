@@ -1,0 +1,65 @@
+@import "./normalize.css";
+
+/* :root -> 获取根元素html */
+
+
+/* --xxx 定义变量 可以在其他属性里写 var（--xxx） */
+
+:root {
+  /* 文本颜色 */
+  --color-text: #666;
+  /* 高亮文本颜色 */
+  --color-hight-text: #ff5777;
+  /* 整体浮上去的颜色 背景颜色 */
+  --color-tint: #ff8198;
+  /* 背景颜色 */
+  --color-background: #fff;
+  --font-size: 14px;
+  --line-hight: 1.5;
+}
+
+a {
+  text-decoration: none;
+  color: var(--color-text);
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Mircosoft YaHei", Arial, Helvetica, sans-serif;
+  /* 禁止用户鼠标在页面上选中文字 图片等 */
+  user-select: none;
+  /* webkit是苹果浏览器引擎 tap点击 highlight背景高亮 color颜色 颜色用数值调节 */
+  -webkit-tap-hightlight-color: transparent;
+  background: var(--color-background);
+  color: var(--color-text);
+  /* rem vw/vh */
+  width: 100vw;
+}
+
+.clear-fix::after {
+  clear: both;
+  content: '';
+  display: block;
+  width: 0;
+  height: 0;
+  visibility: hidden;
+}
+
+.clear-fix {
+  zoom: 1;
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
