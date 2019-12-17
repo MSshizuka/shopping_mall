@@ -1,0 +1,10 @@
+export function //防抖
+debounce (fn, delay) {
+  let timer = null;
+  return function (...args) {
+    if(timer) clearTimeout(timer)
+    timer = setTimeout(()=>{
+      fn.apply(this, args)
+    },delay)
+  }
+}
