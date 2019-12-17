@@ -8,6 +8,7 @@ const Home = () => import('../views/home/Home')
 const Category = () => import('../views/category/Category')
 const Cart = () => import('../views/cart/Cart')
 const Profile = () => import('../views/profile/Profile')
+const Detail = () => import('../views/detail/Detail')
 
 const routes = [
   {
@@ -42,6 +43,11 @@ const routes = [
       title: '档案'
     }
   },
+  {
+    path: '/detail/:iid',
+    component: Detail,
+
+  },
 ]
 
 const router = new VueRouter({
@@ -49,9 +55,9 @@ const router = new VueRouter({
   mode: 'history'
 })
 
-router.beforeEach((to, from, next) => {
-  document.title = to.matched[0].meta.title;
-  next();
-})
+// router.beforeEach((to, from, next) => {
+//   document.title = to.matched[0].meta.title;
+//   next();
+// })
 
 export default router

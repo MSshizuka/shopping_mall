@@ -137,14 +137,11 @@ export default {
     }
   },
   activated () {
-    
-    console.log(this.scrollY)
     this.$refs.scroll.scrollTo(0, this.scrollY, 0)  
     this.$refs.scroll.refresh() 
   },
   deactivated () {
     this.scrollY = this.$refs.scroll.getScrollY();
-    console.log(this.scrollY)
   }
 };
 </script>
