@@ -36,7 +36,8 @@ import BackTop from 'components/content/backTop/BackTop'
 
 //功能方法相关
 import {getHomeMultidata, getHomeGoods} from 'network/home';
-import {debounce} from 'common/utils'
+import {itemListenerMixin} from 'common/mixin'
+
 
 
 export default {
@@ -54,9 +55,11 @@ export default {
       isShowBackTop: false,
       isShowTabControl: false,
       contentOffsetTop: 0,
-      scrollY: 0
+      scrollY: 0,
+      
     };
   },
+  mixins: [itemListenerMixin],
   computed: {
     showgoods () {
       return this.goods[this.currentType].list
@@ -78,12 +81,6 @@ export default {
     this.getHomeGoods('pop');
     this.getHomeGoods('new');
     this.getHomeGoods('sell');
-  },
-  mounted() {
-    const refresh = debounce(this.$refs.scroll.refresh, 1)
-    this.$bus.$on('itemImageLoad', () => {     
-      refresh()
-    })
   },
   methods: {
     //事件监听相关
@@ -137,11 +134,15 @@ export default {
     }
   },
   activated () {
+    // console.log(this.scrollY)
+    this.$refs.scroll.refresh() 
     this.$refs.scroll.scrollTo(0, this.scrollY, 0)  
     this.$refs.scroll.refresh() 
   },
   deactivated () {
     this.scrollY = this.$refs.scroll.getScrollY();
+
+    this.$bus.$off('itemImageLoad', this.itemImgListener)
   }
 };
 </script>

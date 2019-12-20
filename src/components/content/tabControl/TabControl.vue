@@ -53,7 +53,7 @@
     padding: 5px;
   }
   .active {
-    color: var(--color-hight-text);
+    color: var(--color-high-text);
     
   }
 

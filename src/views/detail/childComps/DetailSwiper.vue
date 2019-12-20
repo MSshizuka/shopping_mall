@@ -1,11 +1,9 @@
 <template>
-  <div >
     <swiper class="detail-item">
       <swiper-item v-for="item in topImages">
         <img :src="item" alt="">
       </swiper-item>
     </swiper>
-  </div>
 </template>
   
 <script>
@@ -33,4 +31,6 @@
     height: 300px;
     overflow: hidden;
   }
+
+  
 </style>
