@@ -32,11 +32,11 @@ import NavBar from 'components/common/navbar/NavBar';
 import TabControl from 'components/content/tabControl/TabControl';
 import GoodsList from 'components/content/goods/GoodsList'
 import Scroll from 'components/common/scroll/Scroll'
-import BackTop from 'components/content/backTop/BackTop'
+// import BackTop from 'components/content/backTop/BackTop'
 
 //功能方法相关
 import {getHomeMultidata, getHomeGoods} from 'network/home';
-import {itemListenerMixin} from 'common/mixin'
+import {itemListenerMixin, backTopMixin} from 'common/mixin'
 
 
 
@@ -52,14 +52,14 @@ export default {
         'sell': {page: 0, list:[]}
       },
       currentType: 'pop',
-      isShowBackTop: false,
+      // isShowBackTop: false,
       isShowTabControl: false,
       contentOffsetTop: 0,
       scrollY: 0,
       
     };
   },
-  mixins: [itemListenerMixin],
+  mixins: [itemListenerMixin, backTopMixin],
   computed: {
     showgoods () {
       return this.goods[this.currentType].list
@@ -73,7 +73,7 @@ export default {
     TabControl,
     GoodsList,
     Scroll,
-    BackTop
+    // BackTop
   },
   created() {
     this.getHomeMultidata();
@@ -100,15 +100,14 @@ export default {
       this.$refs.tabControl2.currentIndex = index;
     },
 
-    backClick () {
-      this.$refs.scroll.scrollTo(0, 0, )
-    },
+    // backClick () {
+    //   this.$refs.scroll.scrollTo(0, 0, 500)
+    // },
 
     contentScroll (position) {
-      this.isShowBackTop = position.y < -1000 
       this.isShowTabControl = (-position.y) > this.contentOffsetTop
+      this.showBackTop(position)
     },
-
     loadMore () {
       this.getHomeGoods(this.currentType)
     },

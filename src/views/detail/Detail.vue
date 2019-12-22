@@ -1,15 +1,17 @@
 <template>
   <div class="detail">
-    <detail-nav-bar class="detail-nav" />
-    <scroll class="content" ref="scroll">
+    <detail-nav-bar class="detail-nav" @themeClick="themeClick" ref="detailNav"/>
+    <scroll class="content" ref="scroll" :probeType="3" @scroll="contentScroll">
       <detail-swiper :top-images="topImages"/>
       <detail-base-info :goods="goods"/>
       <detail-shop-info :shop="shop"/>
       <detail-goods-info :detail-info="detailInfo" @imageLoad="imageLoad"/>
-      <detail-param-info :param-info="paramInfo"/>
-      <detail-comment-info :comment-info="commentInfo"/>
-      <goods-list :goods="recommends"/>
+      <detail-param-info :param-info="paramInfo" ref="params"/>
+      <detail-comment-info :comment-info="commentInfo" ref="comment"/>
+      <goods-list :goods="recommends" ref="recommend"/>
     </scroll>
+    <detail-bottom-bar @addToCart="addToCart"/>
+    <back-top @click.native="backClick" v-show="isShowBackTop"/>
   </div>
 </template>
   
@@ -21,12 +23,13 @@
   import DetailGoodsInfo from './childComps/DetailGoodsInfo'
   import DetailParamInfo from './childComps/DetailParamInfo'
   import DetailCommentInfo from './childComps/DetailCommentInfo'
+  import DetailBottomBar from './childComps/DetailBottomBar'
 
   import Scroll from 'components/common/scroll/Scroll'
   import GoodsList from 'components/content/goods/GoodsList'
 
   import {getDetail, Goods, Shop, GoodsParam, getRecommend} from 'network/detail'
-  import {itemListenerMixin} from 'common/mixin'
+  import {itemListenerMixin, backTopMixin} from 'common/mixin'
 
   export default {
     name:	"Detail",
@@ -40,6 +43,8 @@
         paramInfo: {},
         commentInfo: {},
         recommends: [],
+        themeOffset: [],
+        currentIndex: null
       }
     },
     components: {
@@ -51,7 +56,8 @@
       DetailGoodsInfo,
       DetailParamInfo,
       Scroll,
-      GoodsList
+      GoodsList,
+      DetailBottomBar
     },   
     created () {
       //1.获取iid
@@ -89,9 +95,58 @@
     methods: {
       imageLoad () {
         this.$refs.scroll.refresh()
+
+        this.themeOffset = []
+        this.themeOffset.push(0)
+        this.themeOffset.push(this.$refs.params.$el.offsetTop * 1 - 44)
+        this.themeOffset.push(this.$refs.comment.$el.offsetTop * 1 - 44)
+        this.themeOffset.push(this.$refs.recommend.$el.offsetTop * 1 - 44)
+        this.themeOffset.push(Number.MAX_VALUE)
+        // console.log(this.themeOffset)
+      },
+
+      themeClick (index) {
+        // console.log(index)
+        this.$refs.scroll.scrollTo(0, -this.themeOffset[index], 500)
+      },
+
+      contentScroll (position) {
+        const length = this.themeOffset.length - 1
+        let positionY = -position.y
+        for(let i = 0; i < length; i++) {
+          if(this.currentIndex !== i && (positionY >= this.themeOffset[i] &&positionY < this.themeOffset[i + 1] + 47)) {
+            this.currentIndex = i;
+            this.$refs.detailNav.currentIndex = this.currentIndex
+          }
+        }
+
+        // if (positionY < this.themeOffset[1]) {
+        //   this.currentIndex = 0;
+        // } else if (positionY < this.themeOffset[2]) {
+        //   this.currentIndex = 1;
+        // } else if (positionY < this.themeOffset[3]) {
+        //   this.currentIndex = 2;
+        // } else {
+        //   this.currentIndex = 3;
+        // }
+        // this.$refs.detailNav.currentIndex = this.currentIndex
+
+        this.showBackTop (position)
+      },
+      addToCart () {
+        //获取购物车需要展示的信息
+        const product = {}
+        product.image = this.topImages[0],
+        product.title = this.goods.title,
+        product.desc = this.goods.desc,
+        product.price = this.goods.realPrice
+        product.iid = this.iid
+
+        //将商品添加到购物车里
+        this.$store.dispatch('addCart', product)
       }
     },
-    mixins: [itemListenerMixin],
+    mixins: [itemListenerMixin, backTopMixin],
     destoryed() {
       this.$bus.$off('itemImageLoad',this.itemImgListener)
     }
@@ -100,14 +155,15 @@
   
 <style scoped>
   .detail {
-    position: fixed;
+    position: relative;
     z-index: 9;
     background-color: #fff;
     height: 100vh;
   }
 
   .content {
-    height: calc(100% - 44px);
+    height: calc(100% - 44px - 49px);
+    overflow: hidden;
   }
 
   .detail-nav {

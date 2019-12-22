@@ -36,6 +36,7 @@
       },
       titleClick (index) {
         this.currentIndex = index
+        this.$emit('themeClick', index)
       }
     }
   }
