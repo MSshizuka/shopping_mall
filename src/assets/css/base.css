@@ -16,6 +16,8 @@
   --color-background: #fff;
   --font-size: 14px;
   --line-hight: 1.5;
+  /* 300s延迟报错解决 */
+  touch-action: none;
 }
 
 a {
