@@ -22,7 +22,7 @@ FastClick.attach(document.body)
 
 //使用懒加载
 Vue.use(VueLazyLoad, {
-  loading: require('./assets/img/common/placeholder.png')
+  loading: require('./assets/img/common/placeholder.gif')
 })
 
 new Vue({
