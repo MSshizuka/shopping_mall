@@ -26,8 +26,7 @@
 <style scoped>
   .goods-list {
     display: flex;
-    flex-wrap: wrap;
-    
+    flex-wrap: wrap;  
   }
 
 

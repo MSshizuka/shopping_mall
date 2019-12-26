@@ -5,8 +5,11 @@ import store from './store'
 
 import FastClick from 'fastclick'
 import VueLazyLoad from 'vue-lazyload'
+import preview from 'vue-photo-preview'
+import 'vue-photo-preview/dist/skin.css'
 
 import toast from 'components/common/toast'
+
 
 
 Vue.config.productionTip = false
@@ -24,6 +27,9 @@ FastClick.attach(document.body)
 Vue.use(VueLazyLoad, {
   loading: require('./assets/img/common/placeholder.gif')
 })
+
+//使用图片预览
+Vue.use(preview)
 
 new Vue({
   render: h => h(App),

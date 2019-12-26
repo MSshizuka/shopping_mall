@@ -31,6 +31,7 @@
   import {getDetail, Goods, Shop, GoodsParam, getRecommend} from 'network/detail'
   import {itemListenerMixin, backTopMixin} from 'common/mixin'
   import { mapActions } from 'vuex'//映射
+import { log } from 'util'
 
   export default {
     name:	"Detail",
@@ -91,6 +92,7 @@
       //3.请求推荐数据
       getRecommend().then(res => {
         this.recommends = res.data.list
+        // console.log(this.recommends)
       })
     },
     methods: {
@@ -153,7 +155,7 @@
         //2 映射
         this.addCart(product).then(res => {
           // console.log(res)
-          console.log(this.$toast)
+          // console.log(this.$toast)
           this.$toast.show(res, 1500)
         })
       }
